@@ -34,8 +34,8 @@ public:
     AndQuery(const std::string &left_string, const std::string &right_string): 
             left_query(WordQuery(left_string)), right_query(WordQuery(right_string)),
 			s1(left_string), s2(right_string){ }
-    QueryResult eval(const TextQuery&) const;
-private:
+    virtual QueryResult eval(const TextQuery&) const;
+protected:
     WordQuery left_query, right_query;
 	const std::string s1, s2;
 };
@@ -51,13 +51,14 @@ private:
 	const std::string s1, s2;
 };
 
-class AndNQuery: public AndQuery {
+class NQuery: public AndQuery {
+friend class QueryResult;
 public:
-    AndNQuery(const std::string &left_string, const std::string &right_string, const int words_between): 
-            left_query(WordQuery(left_string)), right_query(WordQuery(right_string)),
-			s1(left_string), s2(right_string), words_between(words_between){ }
+    NQuery(const std::string &left_string, const std::string &right_string, const int words_between): 
+            AndQuery(left_string, right_string), words_between(words_between){ }
     QueryResult eval(const TextQuery&) const;
 private:
     const int words_between;
 };
+
 #endif
